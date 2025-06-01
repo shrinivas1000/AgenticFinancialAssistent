@@ -2,22 +2,21 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-# Install system dependencies
+
 RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all application code
+
 COPY . .
 
-# Expose all ports
+
 EXPOSE 8000 8001 8002 8003 8004 8005 8501
 
-# Create startup script
+
 RUN echo '#!/bin/bash\n\
 echo "Starting all services..."\n\
 uvicorn backend.api_agent.main:app --host 0.0.0.0 --port 8000 &\n\
